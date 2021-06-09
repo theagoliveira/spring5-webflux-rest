@@ -1,11 +1,13 @@
 package guru.springframework.spring5webfluxrest.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
+import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import guru.springframework.spring5webfluxrest.domain.Category;
@@ -55,6 +57,21 @@ class CategoryControllerTest {
                      .uri(CategoryController.BASE_URI + "/test")
                      .exchange()
                      .expectBody(Category.class);
+    }
+
+    @Test
+    void testCreate() {
+        BDDMockito.given(categoryRepository.saveAll(any(Publisher.class)))
+                  .willReturn(Flux.just(Category.builder().name(NAME1).build()));
+
+        Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
+
+        webTestClient.post()
+                     .uri(CategoryController.BASE_URI)
+                     .body(monoCategory, Category.class)
+                     .exchange()
+                     .expectStatus()
+                     .isCreated();
     }
 
 }
