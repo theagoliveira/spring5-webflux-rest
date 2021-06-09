@@ -1,11 +1,13 @@
 package guru.springframework.spring5webfluxrest.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
+import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import guru.springframework.spring5webfluxrest.domain.Customer;
@@ -61,6 +63,91 @@ class CustomerControllerTest {
                      .uri(CustomerController.BASE_URI + "/test")
                      .exchange()
                      .expectBody(Customer.class);
+    }
+
+    @Test
+    void testCreate() {
+        BDDMockito.given(customerRepository.saveAll(any(Publisher.class)))
+                  .willReturn(
+                      Flux.just(
+                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+                      )
+                  );
+
+        Mono<Customer> monoCustomer = Mono.just(
+            Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+        );
+
+        webTestClient.post()
+                     .uri(CustomerController.BASE_URI)
+                     .body(monoCustomer, Customer.class)
+                     .exchange()
+                     .expectStatus()
+                     .isCreated();
+    }
+
+    @Test
+    void testUpdate() {
+        BDDMockito.given(customerRepository.save(any(Customer.class)))
+                  .willReturn(
+                      Mono.just(
+                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+                      )
+                  );
+
+        Mono<Customer> monoCustomer = Mono.just(
+            Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+        );
+
+        webTestClient.put()
+                     .uri(CustomerController.BASE_URI + "/test")
+                     .body(monoCustomer, Customer.class)
+                     .exchange()
+                     .expectStatus()
+                     .isOk();
+    }
+
+    @Test
+    void testPatch() {
+        BDDMockito.given(customerRepository.findById(anyString()))
+                  .willReturn(
+                      Mono.just(
+                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+                      )
+                  );
+        BDDMockito.given(customerRepository.save(any(Customer.class)))
+                  .willReturn(
+                      Mono.just(
+                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+                      )
+                  );
+
+        Mono<Customer> monoCustomer = Mono.just(
+            Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+        );
+
+        webTestClient.patch()
+                     .uri(CustomerController.BASE_URI + "/test")
+                     .body(monoCustomer, Customer.class)
+                     .exchange()
+                     .expectStatus()
+                     .isOk();
+    }
+
+    @Test
+    void testPatchNotFound() {
+        BDDMockito.given(customerRepository.findById(anyString())).willReturn(Mono.empty());
+
+        Mono<Customer> monoCustomer = Mono.just(
+            Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+        );
+
+        webTestClient.patch()
+                     .uri(CustomerController.BASE_URI + "/unknown")
+                     .body(monoCustomer, Customer.class)
+                     .exchange()
+                     .expectStatus()
+                     .is5xxServerError();
     }
 
 }

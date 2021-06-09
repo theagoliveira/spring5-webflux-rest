@@ -1,8 +1,15 @@
 package guru.springframework.spring5webfluxrest.controllers;
 
+import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import guru.springframework.spring5webfluxrest.domain.Customer;
@@ -30,6 +37,35 @@ public class CustomerController {
     @GetMapping("/{id}")
     public Mono<Customer> show(@PathVariable String id) {
         return customerRepository.findById(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public Mono<Void> create(@RequestBody Publisher<Customer> customerStream) {
+        return customerRepository.saveAll(customerStream).then();
+    }
+
+    @PutMapping("/{id}")
+    public Mono<Customer> update(@PathVariable String id, @RequestBody Customer customer) {
+        customer.setId(id);
+        return customerRepository.save(customer);
+    }
+
+    @PatchMapping("/{id}")
+    public Mono<Customer> patch(@PathVariable String id, @RequestBody Customer customer) {
+        return customerRepository.findById(id)
+                                 .switchIfEmpty(
+                                     Mono.error(
+                                         new RuntimeException(
+                                             "Customer with ID " + id + " not found."
+                                         )
+                                     )
+                                 )
+                                 .map(c -> {
+                                     customer.setId(id);
+                                     return customer;
+                                 })
+                                 .flatMap(customerRepository::save);
     }
 
 }
