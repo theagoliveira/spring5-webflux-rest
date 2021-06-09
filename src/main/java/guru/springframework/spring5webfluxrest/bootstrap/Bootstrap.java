@@ -39,49 +39,24 @@ public class Bootstrap implements CommandLineRunner {
     }
 
     private void loadCategories() {
-        var fruits = new Category();
-        fruits.setName("Fruits");
-        categoryRepository.save(fruits).block();
-
-        var dried = new Category();
-        dried.setName("Dried");
-        categoryRepository.save(dried).block();
-
-        var fresh = new Category();
-        fresh.setName("Fresh");
-        categoryRepository.save(fresh).block();
-
-        var exotic = new Category();
-        exotic.setName("Exotic");
-        categoryRepository.save(exotic).block();
-
-        var nuts = new Category();
-        nuts.setName("Nuts");
-        categoryRepository.save(nuts).block();
+        categoryRepository.save(Category.builder().name("Fruits").build()).block();
+        categoryRepository.save(Category.builder().name("Dried").build()).block();
+        categoryRepository.save(Category.builder().name("Fresh").build()).block();
+        categoryRepository.save(Category.builder().name("Exotic").build()).block();
+        categoryRepository.save(Category.builder().name("Nuts").build()).block();
 
         log.info(categoryRepository.count().block() + " categories loaded.");
     }
 
     private void loadCustomers() {
-        var customer1 = new Customer();
-        customer1.setFirstName("Susan");
-        customer1.setLastName("Tanner");
-        customerRepository.save(customer1).block();
-
-        var customer2 = new Customer();
-        customer2.setFirstName("Freddy");
-        customer2.setLastName("Meyers");
-        customerRepository.save(customer2).block();
-
-        var customer3 = new Customer();
-        customer3.setFirstName("Joe");
-        customer3.setLastName("Buck");
-        customerRepository.save(customer3).block();
-
-        var customer4 = new Customer();
-        customer4.setFirstName("Michael");
-        customer4.setLastName("Weston");
-        customerRepository.save(customer4).block();
+        customerRepository.save(Customer.builder().firstName("Susan").lastName("Tanner").build())
+                          .block();
+        customerRepository.save(Customer.builder().firstName("Freddy").lastName("Meyers").build())
+                          .block();
+        customerRepository.save(Customer.builder().firstName("Joe").lastName("Buck").build())
+                          .block();
+        customerRepository.save(Customer.builder().firstName("Michael").lastName("Weston").build())
+                          .block();
 
         log.info(customerRepository.count().block() + " customers loaded.");
     }
