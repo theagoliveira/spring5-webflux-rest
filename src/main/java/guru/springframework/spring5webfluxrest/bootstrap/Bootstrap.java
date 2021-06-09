@@ -33,6 +33,7 @@ public class Bootstrap implements CommandLineRunner {
         if (customerRepository.count().block() == 0) {
             log.info("Loading customers...");
             loadCustomers();
+        } else {
             log.info("Customers already loaded.");
         }
     }
