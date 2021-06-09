@@ -2,10 +2,12 @@ package guru.springframework.spring5webfluxrest.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.never;
+import static org.mockito.BDDMockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -33,13 +35,11 @@ class CategoryControllerTest {
 
     @Test
     void testIndex() {
-        BDDMockito.given(categoryRepository.findAll())
-                  .willReturn(
-                      Flux.just(
-                          Category.builder().name(NAME1).build(),
-                          Category.builder().name(NAME2).build()
-                      )
-                  );
+        given(categoryRepository.findAll()).willReturn(
+            Flux.just(
+                Category.builder().name(NAME1).build(), Category.builder().name(NAME2).build()
+            )
+        );
 
         webTestClient.get()
                      .uri(CategoryController.BASE_URI)
@@ -50,8 +50,9 @@ class CategoryControllerTest {
 
     @Test
     void testShow() {
-        BDDMockito.given(categoryRepository.findById(anyString()))
-                  .willReturn(Mono.just(Category.builder().name(NAME1).build()));
+        given(categoryRepository.findById(anyString())).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
 
         webTestClient.get()
                      .uri(CategoryController.BASE_URI + "/test")
@@ -61,8 +62,9 @@ class CategoryControllerTest {
 
     @Test
     void testCreate() {
-        BDDMockito.given(categoryRepository.saveAll(any(Publisher.class)))
-                  .willReturn(Flux.just(Category.builder().name(NAME1).build()));
+        given(categoryRepository.saveAll(any(Publisher.class))).willReturn(
+            Flux.just(Category.builder().name(NAME1).build())
+        );
 
         Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
 
@@ -76,8 +78,9 @@ class CategoryControllerTest {
 
     @Test
     void testUpdate() {
-        BDDMockito.given(categoryRepository.save(any(Category.class)))
-                  .willReturn(Mono.just(Category.builder().name(NAME1).build()));
+        given(categoryRepository.save(any(Category.class))).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
 
         Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
 
@@ -91,10 +94,12 @@ class CategoryControllerTest {
 
     @Test
     void testPatch() {
-        BDDMockito.given(categoryRepository.findById(anyString()))
-                  .willReturn(Mono.just(Category.builder().name(NAME1).build()));
-        BDDMockito.given(categoryRepository.save(any(Category.class)))
-                  .willReturn(Mono.just(Category.builder().name(NAME1).build()));
+        given(categoryRepository.findById(anyString())).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
+        given(categoryRepository.save(any(Category.class))).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
 
         Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
 
@@ -104,11 +109,14 @@ class CategoryControllerTest {
                      .exchange()
                      .expectStatus()
                      .isOk();
+
+        verify(categoryRepository).findById(anyString());
+        verify(categoryRepository).save(any(Category.class));
     }
 
     @Test
     void testPatchNotFound() {
-        BDDMockito.given(categoryRepository.findById(anyString())).willReturn(Mono.empty());
+        given(categoryRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
 
@@ -118,6 +126,9 @@ class CategoryControllerTest {
                      .exchange()
                      .expectStatus()
                      .is5xxServerError();
+
+        verify(categoryRepository).findById(anyString());
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
 }

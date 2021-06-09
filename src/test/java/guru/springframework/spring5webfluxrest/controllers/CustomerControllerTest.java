@@ -2,10 +2,12 @@ package guru.springframework.spring5webfluxrest.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.never;
+import static org.mockito.BDDMockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -35,13 +37,12 @@ class CustomerControllerTest {
 
     @Test
     void testIndex() {
-        BDDMockito.given(customerRepository.findAll())
-                  .willReturn(
-                      Flux.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build(),
-                          Customer.builder().firstName(FIRST_NAME2).lastName(LAST_NAME2).build()
-                      )
-                  );
+        given(customerRepository.findAll()).willReturn(
+            Flux.just(
+                Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build(),
+                Customer.builder().firstName(FIRST_NAME2).lastName(LAST_NAME2).build()
+            )
+        );
 
         webTestClient.get()
                      .uri(CustomerController.BASE_URI)
@@ -52,12 +53,9 @@ class CustomerControllerTest {
 
     @Test
     void testShow() {
-        BDDMockito.given(customerRepository.findById(anyString()))
-                  .willReturn(
-                      Mono.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
-                      )
-                  );
+        given(customerRepository.findById(anyString())).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
 
         webTestClient.get()
                      .uri(CustomerController.BASE_URI + "/test")
@@ -67,12 +65,17 @@ class CustomerControllerTest {
 
     @Test
     void testCreate() {
-        BDDMockito.given(customerRepository.saveAll(any(Publisher.class)))
-                  .willReturn(
-                      Flux.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
-                      )
-                  );
+        given(customerRepository.saveAll(any(Publisher.class)))
+                                                               .willReturn(
+                                                                   Flux.just(
+                                                                       Customer.builder()
+                                                                               .firstName(
+                                                                                   FIRST_NAME1
+                                                                               )
+                                                                               .lastName(LAST_NAME1)
+                                                                               .build()
+                                                                   )
+                                                               );
 
         Mono<Customer> monoCustomer = Mono.just(
             Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
@@ -88,12 +91,9 @@ class CustomerControllerTest {
 
     @Test
     void testUpdate() {
-        BDDMockito.given(customerRepository.save(any(Customer.class)))
-                  .willReturn(
-                      Mono.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
-                      )
-                  );
+        given(customerRepository.save(any(Customer.class))).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
 
         Mono<Customer> monoCustomer = Mono.just(
             Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
@@ -109,18 +109,12 @@ class CustomerControllerTest {
 
     @Test
     void testPatch() {
-        BDDMockito.given(customerRepository.findById(anyString()))
-                  .willReturn(
-                      Mono.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
-                      )
-                  );
-        BDDMockito.given(customerRepository.save(any(Customer.class)))
-                  .willReturn(
-                      Mono.just(
-                          Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
-                      )
-                  );
+        given(customerRepository.findById(anyString())).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
+        given(customerRepository.save(any(Customer.class))).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
 
         Mono<Customer> monoCustomer = Mono.just(
             Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
@@ -132,11 +126,14 @@ class CustomerControllerTest {
                      .exchange()
                      .expectStatus()
                      .isOk();
+
+        verify(customerRepository).findById(anyString());
+        verify(customerRepository).save(any(Customer.class));
     }
 
     @Test
     void testPatchNotFound() {
-        BDDMockito.given(customerRepository.findById(anyString())).willReturn(Mono.empty());
+        given(customerRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<Customer> monoCustomer = Mono.just(
             Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
@@ -148,6 +145,9 @@ class CustomerControllerTest {
                      .exchange()
                      .expectStatus()
                      .is5xxServerError();
+
+        verify(customerRepository).findById(anyString());
+        verify(customerRepository, never()).save(any(Customer.class));
     }
 
 }
