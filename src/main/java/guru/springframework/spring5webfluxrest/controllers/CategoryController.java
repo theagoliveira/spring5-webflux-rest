@@ -47,8 +47,12 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public Mono<Category> update(@PathVariable String id, @RequestBody Category category) {
-        category.setId(id);
-        return categoryRepository.save(category);
+        return categoryRepository.findById(id).switchIfEmpty(Mono.just(category)).map(c -> {
+            if (c.getId() != null && !c.getId().isEmpty()) {
+                category.setId(id);
+            }
+            return category;
+        }).flatMap(categoryRepository::save);
     }
 
     @PatchMapping("/{id}")

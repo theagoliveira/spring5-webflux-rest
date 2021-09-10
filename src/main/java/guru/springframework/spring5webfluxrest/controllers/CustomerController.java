@@ -47,8 +47,12 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public Mono<Customer> update(@PathVariable String id, @RequestBody Customer customer) {
-        customer.setId(id);
-        return customerRepository.save(customer);
+        return customerRepository.findById(id).switchIfEmpty(Mono.just(customer)).map(c -> {
+            if (c.getId() != null && !c.getId().isEmpty()) {
+                customer.setId(id);
+            }
+            return customer;
+        }).flatMap(customerRepository::save);
     }
 
     @PatchMapping("/{id}")
