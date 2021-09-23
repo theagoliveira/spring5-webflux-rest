@@ -1,6 +1,6 @@
 [![CircleCI](https://circleci.com/gh/theagoliveira/spring5-webflux-rest.svg?style=shield)](https://circleci.com/gh/theagoliveira/spring5-webflux-rest) [![codecov](https://codecov.io/gh/theagoliveira/spring5-webflux-rest/branch/main/graph/badge.svg?token=CZD0L7R0J0)](https://codecov.io/gh/theagoliveira/spring5-webflux-rest)
 
-# Spring Framework — Spring WebFlux RESTFul WebService
+# Spring Framework — Spring WebFlux RESTful WebService
 
 Project from the online course [**Spring Framework 5: Beginner to Guru**](https://www.udemy.com/course/spring-framework-5-beginner-to-guru/) by John Thompson — Section 26.
 
