@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "d724724f-3792-4025-84af-63f6b427a191",
+		"name": "Spring Framework Guru: spring5-webflux-rest (Heroku)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category with ID 60c060942f63c12e4a1bb77d",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories/60c060942f63c12e4a1bb77d",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"60c060942f63c12e4a1bb77d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer with ID 60c060942f63c12e4a1bb782",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers/60c060942f63c12e4a1bb782",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"60c060942f63c12e4a1bb782"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Test Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Test\",\n    \"last_name\": \"Test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category Test (Update)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test Updated\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories/60c06f5f9c588819dcb34454",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"60c06f5f9c588819dcb34454"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category Test (Create)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test Created\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories/test",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Test Test (Update)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Test\",\n    \"last_name\": \"Updated\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers/613ad266e0ec4e75379c35f2",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"613ad266e0ec4e75379c35f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Test Test (Create)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Test\",\n    \"last_name\": \"Created\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers/test",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category Test",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test Patched\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories/60c06f5f9c588819dcb34454",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"60c06f5f9c588819dcb34454"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unknown Category",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Unknown\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/categories/unknown",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Test Test",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Test\",\n    \"last_name\": \"Patched\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers/60c06fbd9c588819dcb34457",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"60c06fbd9c588819dcb34457"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unkown Customer",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Unknown\",\n    \"last_name\": \"Unknown\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://aqueous-forest-02764.herokuapp.com/api/v1/customers/unknown",
+					"protocol": "https",
+					"host": [
+						"aqueous-forest-02764",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
