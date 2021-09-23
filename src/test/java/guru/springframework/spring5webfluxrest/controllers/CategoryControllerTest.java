@@ -3,8 +3,8 @@ package guru.springframework.spring5webfluxrest.controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.never;
-import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,6 +81,28 @@ class CategoryControllerTest {
         given(categoryRepository.save(any(Category.class))).willReturn(
             Mono.just(Category.builder().name(NAME1).build())
         );
+
+        given(categoryRepository.findById(anyString())).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
+
+        Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
+
+        webTestClient.put()
+                     .uri(CategoryController.BASE_URI + "/test")
+                     .body(monoCategory, Category.class)
+                     .exchange()
+                     .expectStatus()
+                     .isOk();
+    }
+
+    @Test
+    void testCreateWithPut() {
+        given(categoryRepository.save(any(Category.class))).willReturn(
+            Mono.just(Category.builder().name(NAME1).build())
+        );
+
+        given(categoryRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<Category> monoCategory = Mono.just(Category.builder().name(NAME1).build());
 

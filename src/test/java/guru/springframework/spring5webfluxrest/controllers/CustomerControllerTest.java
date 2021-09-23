@@ -3,8 +3,8 @@ package guru.springframework.spring5webfluxrest.controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.never;
-import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,6 +94,30 @@ class CustomerControllerTest {
         given(customerRepository.save(any(Customer.class))).willReturn(
             Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
         );
+
+        given(customerRepository.findById(anyString())).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
+
+        Mono<Customer> monoCustomer = Mono.just(
+            Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
+        );
+
+        webTestClient.put()
+                     .uri(CustomerController.BASE_URI + "/test")
+                     .body(monoCustomer, Customer.class)
+                     .exchange()
+                     .expectStatus()
+                     .isOk();
+    }
+
+    @Test
+    void testCreateWithPut() {
+        given(customerRepository.save(any(Customer.class))).willReturn(
+            Mono.just(Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build())
+        );
+
+        given(customerRepository.findById(anyString())).willReturn(Mono.empty());
 
         Mono<Customer> monoCustomer = Mono.just(
             Customer.builder().firstName(FIRST_NAME1).lastName(LAST_NAME1).build()
